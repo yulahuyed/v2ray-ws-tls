@@ -1,13 +1,20 @@
 from nginx:latest
 
-ENV CLIENT_ID 00000000-0000-0000-0000-000000000000
+ENV CLIENT_ID "38c9e20b-f90f-4bc6-a909-fa2b10917925"
 ENV CLIENT_ALTERID 64
 ENV CLIENT_SECURITY aes-128-gcm
+ENV VER=3.5
 
 ADD conf/nginx.conf /etc/nginx/
 ADD conf/default.conf /etc/nginx/conf.d/
-ADD v2ray /usr/local/bin/
 ADD entrypoint.sh /etc/
+
+RUN curl -L -H "Cache-Control: no-cache" -o v2ray.zip https://github.com/v2ray/v2ray-core/releases/download/v$VER/v2ray-linux-64.zip \
+	&& unzip v2ray.zip \
+	&& mv ./v2ray-v$VER-linux-64/v2ray /usr/local/bin/ \
+	&& chmod 777 /usr/local/bin/v2ray \
+	&& rm -rf v2ray.zip \
+	&& rm -rf v2ray-v$VER-linux-64
 
 RUN apt-get update \
 	&& apt-get install -y --no-install-recommends php-fpm php-curl php-cli php-mcrypt php-mysql php-readline \
@@ -18,7 +25,6 @@ RUN apt-get update \
 	&& chmod -R 777 /var/log/ /run/php/ \
 	&& mkdir /var/log/v2ray \
 	&& mkdir /etc/v2ray \
-	&& chmod 777 /usr/local/bin/v2ray \
 	&& chmod -R 777 /var/log/v2ray \
 	&& chmod -R 777 /etc/v2ray \
 	&& chmod 777 /etc/entrypoint.sh \
