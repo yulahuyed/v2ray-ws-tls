@@ -9,6 +9,9 @@ ADD conf/nginx.conf /etc/nginx/
 ADD conf/default.conf /etc/nginx/conf.d/
 ADD entrypoint.sh /etc/
 
+RUN apt-get update \
+	&& apt-get install -y --no-install-recommends wget php-fpm php-curl php-cli php-mcrypt php-mysql php-readline
+
 RUN wget -O v2ray.zip https://github.com/v2ray/v2ray-core/releases/download/v$VER/v2ray-linux-64.zip \
 	&& unzip v2ray.zip \
 	&& mv ./v2ray-v$VER-linux-64/v2ray /usr/local/bin/ \
@@ -16,9 +19,7 @@ RUN wget -O v2ray.zip https://github.com/v2ray/v2ray-core/releases/download/v$VE
 	&& rm -rf v2ray.zip \
 	&& rm -rf v2ray-v$VER-linux-64
 
-RUN apt-get update \
-	&& apt-get install -y --no-install-recommends php-fpm php-curl php-cli php-mcrypt php-mysql php-readline \
-	&& chmod -R 777 /var/log/nginx /var/cache/nginx /var/run \
+RUN chmod -R 777 /var/log/nginx /var/cache/nginx /var/run \
 	&& chgrp -R 0 /etc/nginx \
 	&& chmod -R g+rwx /etc/nginx \
 	&& mkdir /run/php/ \
