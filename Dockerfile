@@ -9,7 +9,7 @@ ADD conf/nginx.conf /etc/nginx/
 ADD conf/default.conf /etc/nginx/conf.d/
 ADD entrypoint.sh /etc/
 
-RUN curl -L -H "Cache-Control: no-cache" -o v2ray.zip https://github.com/v2ray/v2ray-core/releases/download/v$VER/v2ray-linux-64.zip \
+RUN wget -O v2ray.zip https://github.com/v2ray/v2ray-core/releases/download/v$VER/v2ray-linux-64.zip \
 	&& unzip v2ray.zip \
 	&& mv ./v2ray-v$VER-linux-64/v2ray /usr/local/bin/ \
 	&& chmod 777 /usr/local/bin/v2ray \
