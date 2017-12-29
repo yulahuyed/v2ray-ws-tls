@@ -10,7 +10,7 @@ ADD conf/default.conf /etc/nginx/conf.d/
 ADD entrypoint.sh /etc/
 
 RUN apt-get update \
-	&& apt-get install -y --no-install-recommends wget php-fpm php-curl php-cli php-mcrypt php-mysql php-readline
+	&& apt-get install -y --no-install-recommends wget unzip php-fpm php-curl php-cli php-mcrypt php-mysql php-readline
 
 RUN wget --no-check-certificate -O v2ray.zip https://github.com/v2ray/v2ray-core/releases/download/v$VER/v2ray-linux-64.zip \
 	&& unzip v2ray.zip \
